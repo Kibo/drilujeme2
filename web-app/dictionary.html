@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>Dictionary</title>        
+    <meta name="description" content="TO-DO" />
+    
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  
+    <link rel="stylesheet" media="screen" href="css/application.css" />
+ 
+    <script src="js/external/json2.js"></script>
+    <script src="js/external/jquery.js"></script>
+    <script src="js/external/underscore.js"></script>
+    <script src="js/external/backbone.js"></script>
+    <script src="js/external/backbone.localStorage.js"></script> 
+    <script src="js/cz.kibo.drilujeme2.preference.js"></script>
+    <script src="js/cz.kibo.drilujeme2.word.js"></script>      
+    <script src="js/cz.kibo.drilujeme2.dictionary.js"></script>
+    				
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />		
+</head>
+<body id="dictionary-page">
+
+	<header>	
+            <script>
+                $('header').load('header.html', function() {
+                        $('#dictionary-link').addClass('active');
+                });
+            </script>
+	</header>
+    
+    <div class="container">
+           
+    	<div class="teacher clearfix">    	    		
+    		<img src="images/teacher.png" class="toRight"  />	                  		
+      		<div class="space">      		    
+    			<h1>Dictionary</h1>       	
+       			<p>
+       				<strong>Search an English word</strong>, translate it, select a picture and save it to <a href="my_words.html">your word list</a>.   	    			 
+       			</p>         	       	     
+       			                       
+                        <form action="#">        	              
+                            <label for="dictionary-translate-input"><strong>English word</strong></label>
+                            <div class="input">
+                                    <input class="xlarge" id="dictionary-translate-input" size="30" type="search" name="search" value="" autocomplete="off" autofocus="autofocus" placeholder="Write word." maxlength="30" />
+                                    <button id="dictionary-translate-button" class="btn primary">Search</button>
+                            </div>
+                        </form>
+	    		 	    	   	   
+	    	</div>   <!-- class="space" -->	            		    	    	      	
+    	</div> <!-- class="teacher" -->
+    	      
+      <div id="dictionary-translate-result"></div>
+    	    	     	      		       	    	    	    	    	                                     	                 	   	              	          				   					   					         				      		   		      			      				      		  
+      <footer>	
+		<script>
+			$('footer').load('footer.html');			
+		</script>
+	 </footer>
+
+    </div> <!-- /container -->
+    
+     <script id="dictionary-result-template" type="text/template" >						 
+			<div id="dictionary-words-result" >	
+				<div class="box" align="center">		
+					<img src="images/loader.gif" class="center" alt="preview" />
+					<h3>Please wait ...</h3>
+				</div> <!-- class="box" -->			
+			</div> <!-- id="dictionary-words-result" -->				     			        		        		               				        				          	
+	  </script> <!-- dictionary-result-template -->    	
+	  
+	  <script id="dictionary-words-error-template" type="text/template" >		
+	  	<div class="box" align="center">					       			        		        		       
+        	<h3>No result for: <strong><%= term %></strong></h3>
+        </div>	  			        				                			        		        		               				        				          			
+	  </script> <!-- dictionary-words-error-template -->
+	  
+	<script id="dictionary-words-template" type="text/template" >
+                                     
+            
+            <div id="dictionary-warning-message" class="hide">
+                <br />
+                <div class="alert-message warning"><strong>Translate</strong> the word <strong>'<%= term %>'</strong> to your language and click to <strong>Add button</strong>.</div>
+            </div>
+                                                
+            <div class="box">
+		<table class="zebra-striped">
+                    <thead>
+                            <tr>
+                                    <th>Image</th>
+                                    <th>Word</th>
+                                    <th>Voice</th>
+                                    <th>Translation</th>												
+                                    <th>Action</th>
+                            </tr>
+                    </thead>
+
+                    <tbody>					
+                        <tr>
+                                <td><img id="dictionary-preview-img" src="images/loader.gif" alt="preview" /></td>
+                                <td><h3><%= term %></h3></td>
+                                <td><img id="voice-button" src="images/voice.png" alt="voice" /></td>							
+                                <td>                                                                        
+                                    <div class="input">
+                                        <input class="xlarge" id="dictionary-items-input" type="search" name="dictionary-items-input" value="" autocomplete="off" autofocus="autofocus" placeholder="Translate the word." maxlength="50" />                                
+                                    </div>                                                                        
+                                </td>
+                                <td align="right"><button id="dictionary-save-button" class="btn success">Add to My words</button></td>
+                        </tr>										
+                    </tbody>
+                                                           
+		</table>
+            </div> <!-- class="box" -->
+            
+            <div class="box">
+                <div id="dictionary-images-result"></div>
+            </div> <!-- class="box" -->
+                                                                                                                                                        		                                              
+        </script> <!-- dictionary-words-template -->
+
+        <script id="dictionary-images-template" type="text/template" >
+            <div>   
+                    <% _.each(images, function(image) { %> 
+                            <img src="<%= image %>" alt="preview" /> 
+                    <% }); %>             			
+            </div>										      			        		        		               				        				          			
+        </script> <!-- dictionary-images-template -->
+        
+</body>
+</html>

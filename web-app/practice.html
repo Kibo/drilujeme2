@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Practice</title>        
+    <meta name="description" content="TO-DO" />
+    
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+      
+    <link rel="stylesheet" media="screen" href="css/application.css"/>
+	    
+    <script src="js/external/jquery.js"></script>
+    <script src="js/external/json2.js"></script>
+    <script src="js/external/underscore.js"></script>
+    <script src="js/external/backbone.js"></script>
+    <script src="js/external/backbone.localStorage.js"></script>     
+    <script src="js/cz.kibo.drilujeme2.preference.js"></script>
+    <script src="js/cz.kibo.drilujeme2.practice.js"></script>
+		
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />		
+</head>
+<body>
+    <header>	
+        <script>		
+                $('header').load('header.html', function() {
+                        $('#practice-link').addClass('active');
+                });
+        </script>
+    </header>
+           
+    <div class="container">
+    	<div id="practice-page">        
+    	
+	    	<div class="teacher">
+                    <h1>Practice</h1>       	
+                    <p>   	    			
+                            <strong>Choose your teacher</strong> and click on the <strong>Start button</strong>.
+                    </p> 	
+	       	</div>	
+	      				 	                           
+	       <div class="row">
+	      
+	      	<div class="span4">
+	      		<div class="tag">
+	      		<img src="images/mermaid.png" alt="mermaid" />
+	      		<br />
+	      		<label>
+	            	<input class="practice-test-type-radio" type="radio" name="practice-teacher" value="mermaid" />
+	                <span class="label important">Mermaid</span>
+	            </label>   
+	            <p>I like everything <strong>new</strong>. I will practice from the <strong>new words</strong>.</p>
+	            </div> 
+	      	</div>
+	      	
+	      	<div class="span4"> 
+	      		<div class="tag">
+	      			<img src="images/devil.png" alt="devil" />   
+	      			<br />      		
+	      			<label>
+	            		<input class="practice-test-type-radio" type="radio" name="practice-teacher" value="devil" />
+	                	<span class="label important">Devil</span>
+	            	</label>              
+	            	<p>I like everything <strong>incorrect</strong>. I will practice from <strong>your mistakes</strong>.</p>
+	            </div>	     		      		  		      
+	      	</div>
+	      	
+	      	<div class="span4">
+	      		<div class="tag">
+	      		<img src="images/pirate.png" alt="pirate" />   
+	      		<br />      		
+	      		<label>
+	            	<input class="practice-test-type-radio" type="radio" name="practice-teacher" value="pirate" />
+	                <span class="label important">Pirate</span>
+	            </label>              
+	            <p>I like <strong>gravity</strong> and balance. I will practice from <strong>your gravity</strong>.</p>
+	            </div>		
+	      	</div>
+	      	
+	      	<div class="span4">
+                    	
+	      	</div>
+	      	      
+	      </div> <!-- class="row" -->
+	                         
+	      <div class="box">          
+	      	<form class="toLeft">	      		       	
+	          		<div class="clearfix">
+			            <label for="practice-numberOfWords"><strong>Number of words</strong></label>
+			            <div class="input">
+			              <select name="practice-numberOfWords" id="practice-numberOfWords" class="small">
+			                <option>10</option>
+			                <option>20</option>
+			                <option>30</option>
+			                <option>40</option>
+			                <option>50</option>
+			              </select>
+			            </div>
+	          		</div> <!-- /clearfix -->	                  			                                                          
+	      	</form> 
+	      	
+	      	<div align="right">
+		      	<button id="practice-start-button" class="btn primary">Start practicing</button>
+		    </div>  
+	      	
+	      	</div> <!-- class="box" -->
+	      	      
+	      	
+	    
+	    </div> <!-- id="practice-page -->
+      	                        
+         <footer>	
+		<script>
+			$('footer').load('footer.html');
+		</script>
+	 </footer>
+    	    	     	      		       	    	    	    	    	                                     	                 	   	              	          				   					   					         				      		   		      			      				      		     
+    </div> <!-- /container --> 
+     	    
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>My words</title>        
+    <meta name="description" content="TO-DO" />
+    
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  
+    <link rel="stylesheet" media="screen" href="css/application.css" />
+    
+    <script src="js/external/json2.js"></script>
+    <script src="js/external/jquery.js"></script>
+    <script src="js/external/underscore.js"></script>
+    <script src="js/external/backbone.js"></script>
+    <script src="js/external/backbone.localStorage.js"></script>   
+    <script src="js/cz.kibo.drilujeme2.word.js"></script>
+    <script src="js/cz.kibo.drilujeme2.preference.js"></script>
+    <script src="js/cz.kibo.drilujeme2.my_words.js"></script>
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />	
+</head>
+<body id="my_words-page">
+	
+	<header>	
+            <script>
+                $('header').load('header.html', function() {
+                        $('#my_words-link').addClass('active');
+                });
+            </script>
+	</header>
+    
+    <div class="container">
+           
+    	<div class="teacher clearfix">    	    		
+    		<img src="images/kid.png" class="toRight"  />	                  		
+      		<div class="space">      		    
+    			<h1>My words</h1>       	
+       			<p>   	    			
+   	    			Explore your words. <strong>Edit gravity</strong>. Low gravity have words that you know well. High gravity have words that <strong>you do often mistakes</strong>. Delete words that you do not need.
+       			</p>         	       	            				    	   	  
+	    	</div>   <!-- class="space" -->	            		    	    	      	
+    	</div> <!-- class="teacher" -->
+    	      
+      <div id="my_words-list-result"></div>
+    
+      <footer>	
+		<script>
+			$('footer').load('footer.html');
+		</script>
+	 </footer>
+    	    	     	      		       	    	    	    	    	                                     	                 	   	              	          				   					   					         				      		   		      			      				      		     
+    </div> <!-- /container -->   
+    
+    <script id="my_words-list-template" type="text/template">
+		<div class="box">
+		<table class="zebra-striped">
+				<thead>
+					<tr>
+						<th>Word</th>
+						<th>Translation</th>                                              
+						<th>Priority</th>						
+						<th class="span2">Action</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<% _.each(words, function(word, idx) { %>
+						<tr>
+							<td><%= word.term %></td>
+							<td><%= word.items %></td>                                                      
+							<td><input type="number" class="vocabulary-gravity-input span2" name="gravity<%= idx %>" data-model="<%= word.term %>" min="1" max="20" value="<%= word.gravity %>" /></td>							
+							<td><a class="vocabulary-delete-link btn danger" href="#" data-model="<%= word.term %>" >delete</a></td>
+						</tr>
+					<% }); %> 					
+				</tbody>					
+		</table>
+		</div>
+</script>
+
+<script id="my_words-list-noresult-template" type="text/template">
+		<div class="box" align="center">		
+			<h3>No words in your vocabulary.</h3>
+		</div>		
+</script>
+        
+</body>
+</html>

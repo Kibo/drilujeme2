@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pirate</title>        
+    <meta name="description" content="TO-DO" />
+    
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link rel="stylesheet" media="screen" href="css/application.css" />
+	
+    <script src="js/external/json2.js"></script>
+    <script src="js/external/jquery.js"></script>
+    <script src="js/external/underscore.js"></script>
+    <script src="js/external/backbone.js"></script>
+    <script src="js/external/backbone.localStorage.js"></script>
+    <script src="js/cz.kibo.drilujeme2.word.js"></script>       
+    <script src="js/cz.kibo.drilujeme2.preference.js"></script>
+    <script src="js/cz.kibo.drilujeme2.practice_words_pirate.js"></script>
+    <script src="js/cz.kibo.drilujeme2.practice_test.js"></script>
+		
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />		
+</head>
+<body id="practice-test-page">
+
+    <header>	
+        <script>		
+                $('header').load('header.html', function() {
+                        //$('#practice-link').addClass('active');
+                });
+        </script>
+    </header>
+           
+    <div class="container">
+    	           	
+    	<div class="teacher clearfix">
+    		<img src="images/pirate.png" class="creature"  />
+    		<h1>Pirate</h1>       	
+       		<p>   	    			
+                    practices of <strong>your gravity</strong>.
+       		</p> 	       		
+       	</div>	
+	      				 	                           	       
+	<div id="practice-test-view"></div>
+      	                        
+        <footer>	
+            <script>
+                $('footer').load('footer.html');
+            </script>
+        </footer>
+    	    	     	      		       	    	    	    	    	                                     	                 	   	              	          				   					   					         				      		   		      			      				      		     
+    </div> <!-- /container --> 
+	   	
+    <script id="practice-isEmpty-template" type="text/template" >
+        <div class="box" align="center">		
+            <h3>No words in your vocabulary.</h3>
+        </div>     
+    </script>
+		  	
+</body>
+</html>
