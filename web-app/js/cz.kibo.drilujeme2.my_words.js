@@ -15,9 +15,9 @@ window.VocabularyView = Backbone.View.extend({
         	
         	events:{
         		"change .vocabulary-gravity-input": "updateWord",
-        		"click .vocabulary-delete-link": "deleteWord"        		        			        
+        		"click .vocabulary-delete-link": "deleteWord"                     
         	},
-        	
+                                  	
         	deleteWord:function( event ){                  
         		var id = $(event.target).attr('data-model');        		        	
         		this.localStorage.destroy(  {id: id} );        		

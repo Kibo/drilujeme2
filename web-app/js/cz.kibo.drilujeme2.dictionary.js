@@ -26,7 +26,7 @@ window.WordsView = Backbone.View.extend({
 	errorTemplate: _.template( $('#dictionary-words-error-template').html()  ),
 	
 	events:	{		
-		"click #voice-button":              "playSound",
+		"click .voice-button":              "playSound",
 		"click #dictionary-save-button":    "saveModel"			
 	},
 	

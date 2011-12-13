@@ -45,7 +45,7 @@ table tr td{
     	cursor:pointer;
     }
                         
- #voice-button{
+ .voice-button{
     	vertical-align:middle;
     	cursor:pointer;
     }
