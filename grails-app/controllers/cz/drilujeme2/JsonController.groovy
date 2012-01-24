@@ -9,7 +9,7 @@ class JsonController {
 
     def translate = {                      
         def query =  URLEncoder.encode(params.q)
-
+      
         /*
         * http://www.google.com/dictionary/json?callback=data&q=leave&sl=en&tl=cs&restrict=pr,re
         * pr - primaries
@@ -23,9 +23,9 @@ class JsonController {
             "&tl=en"+
             "&restrict=pr";
 
-        def url = new URL( TRANSLATE_SEARCH_BASE_URL )
+        def url = new URL( TRANSLATE_SEARCH_BASE_URL )             
         def text = url.getText("utf-8")
-       
+                      
         def gjson = JSON.parse( text.substring( text.indexOf("{") , (text.lastIndexOf("}") + 1)))
       
         def snd    

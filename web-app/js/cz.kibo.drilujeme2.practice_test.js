@@ -1,22 +1,53 @@
 window.Graph = Backbone.Model.extend({
     
+    defaults: function(){			
+			function getDate(){
+				var today = new Date();						
+				return new Date(today.getFullYear(), today.getMonth(), today.getDate() ).getTime();
+			}
+								
+			return{
+                            "id": getDate(),
+                            "words":	0,
+                            "mistakes":	0			    		    
+			};			
+    },
+    
     MAX_ITEM:   10,
     MONTH_NAMES: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-				  
+    KARMA_IMAGES: [ "Zombie", "Troll", "Baby", "Student", "Teacher", "Superhero", "Robot"],
+    KARMA_TEXTS: [ "You're a thing without a brain.", "You are stupid monstrum.", "Everything is just in front of you.", "Be patient and persistent.", "Share your knowledge with others.", "Take the rich and give the poor.", "You can not be human."],
+            
     initialize: function(){		
          this.preference = new Preference();
-         this.localStorage = this.preference.dictionary;   
+         this.localStorage = new Store( "cz.kibo.drilujeme2.graph" );
          this.publishedMap = this.published();
-         this.mistakesMap = this.mistakes();
+         this.activities = this.localStorage.findAll();            
     },
+    
+    savePracticeResult:function(){
+        var itm = this.localStorage.find( {id:this.get('id')} );
+        if( itm ){
+            this.set({'words': itm.words + this.get('words'), 'mistakes': itm.mistakes + this.get('mistakes') });
+            
+        }else{
+            this.set({'words': this.get('words'), 'mistakes': this.get('mistakes') });          
+        }
         
-    published:function(){
-        
+        this.save();
+        this.activities = this.localStorage.findAll();
+    },
+    
+    computeSuccess:function(){
+        this.success = Math.round( (this.get('words') - this.get('mistakes')) == 0 ? 0 : (this.get('words') - this.get('mistakes')) / ( this.get('words')/ 100 ) );
+    },
+         
+    published:function(){        
         var publishedMap = {};
         var monthNames = this.MONTH_NAMES;
-        
-        var publishedArray = _.pluck(this.localStorage.findAll(), 'published');       
-        var publishedArrayUniq = _.uniq( publishedArray );
+                        
+        var publishedArray = _.pluck(this.preference.dictionary.findAll(), 'published');       
+        var publishedArrayUniq = _.uniq( publishedArray );       
         var publishedArraySelected = publishedArrayUniq.sort().reverse().slice(0, this.MAX_ITEM  ).reverse();
                                         
         _.each( publishedArraySelected , function(publishedDate){            
@@ -28,48 +59,77 @@ window.Graph = Backbone.Model.extend({
         return publishedMap ;                  
     },
     
-    publishedKeys:function(){
+    publishedDays:function(){
         return _.keys( this.publishedMap ).join('|');
     },
         
-    publishedValues:function(){                
+    publishedWords:function(){                
         return _.values( this.publishedMap ).join(',');
     },
     
-    publishedMaxValue:function(){
+    publishedMaxOfWords:function(){
         return _.max( this.publishedMap , function(pub){return pub;});
     },
     
-    mistakes:function(){
-        var mistakesMap = {};
-        var monthNames = this.MONTH_NAMES;
+    activitiesDays:function(){               
+        var monthNames = this.MONTH_NAMES;        
+        var days = _.pluck(this.activities, 'id'); 
+        var daysSort = days.sort().reverse().slice(0, this.MAX_ITEM  ).reverse();
         
-        var mistakesArray = _.pluck(this.localStorage.findAll(), 'errorDate');
-        var mistakesArrayUniq = _.uniq( mistakesArray );        
-        var mistakesArraySelected = mistakesArrayUniq.sort().reverse().slice(0, this.MAX_ITEM  ).reverse();
-        
-         _.each( mistakesArraySelected, function( errDate ){            
-           var size = _.filter( mistakesArray , function( eDate ){return eDate == errDate;}).length;                                 
-           var date = new Date( errDate );                                
-           mistakesMap[  monthNames[ date.getMonth()]  + " " + date.getDate()  ] = size                      
+        var daysNamed = []
+        _.each( daysSort , function( day ){                                                     
+           var date = new Date( day );                                
+           daysNamed.push( monthNames[ date.getMonth()]  + " " + date.getDate() );                   
         });
-                                       
-        return mistakesMap ; 
+               
+        return daysNamed.join('|');
     },
     
-    mistakesKeys:function(){
-         return _.keys( this.mistakesMap ).join('|');
+    activitiesWords:function(){
+        var words = _.pluck(this.activities, 'words');               
+        var wordsSort = words.reverse().slice(0, this.MAX_ITEM  ).reverse();                
+        return wordsSort.join(',');
     },
     
-    mistakesValues:function(){
-        return _.values( this.mistakesMap ).join(',');
+    activitiesMistakes:function(){
+        var mistakes = _.pluck(this.activities, 'mistakes');               
+        var mistakesSort = mistakes.reverse().slice(0, this.MAX_ITEM  ).reverse();               
+        return mistakesSort.join(',');
     },
     
-    mistakesMaxValue:function(){
-        return _.max( this.mistakesMap , function(mis){return mis;});
-    }
+    activitiesMaxOfWords:function(){
+        var activity =  _.max( this.activities , function( activity ){return activity.words;});
+        return activity.words;
+    },
     
-    
+    computeKarma:function(){
+                
+        var level = 0;
+        
+        //robot
+        if( this.success == 100 ) level =  6;
+        
+        //superhero
+        if( this.success < 100 ) level =  5; 
+        
+        //teacher
+        if( this.success < 95 ) level =  4; 
+        
+        //kid
+        if( this.success < 90 ) level =  3;
+        
+         //baby
+        if( this.success < 85 ) level =  2; 
+                           
+        //troll
+        if( this.success < 80 ) level =  1;
+        
+        //zombie
+        if( this.success < 70 ) level =  0;
+                                                                                                                                   
+        this.karmaTitle = this.KARMA_IMAGES[level];
+        this.karmaText = this.KARMA_TEXTS[level]; 
+    }  
 });
 
 var CZ_KIBO_DRILUJEME2_TEMPLATES = {
@@ -142,8 +202,33 @@ var CZ_KIBO_DRILUJEME2_TEMPLATES = {
                 <div class="row"> \
                     <div class="span8" > \
                         <div class="box"> \
-                            <h3>Success</h3> \
-                            <img src="http://chart.apis.google.com/chart?cht=gom&chs=435x230&chxt=x,y&chd=t:<%= success %>&chl=<%= success %>%&chco=FF0000,00FF00&chf=bg,s,F5F5F5" alt="success" width="435" height="230" /> \
+                            <h3>Today\'s karma</h3> \
+                            <div class="popoverWrapper"> \
+                                <img src="images/karma/<%= graphs.karmaTitle %>.png" alt="<%= graphs.karmaTitle %>" width="128" height="128" > \
+                                <div class="popover right"> \
+                                        <div class="arrow"></div> \
+                                        <div class="inner"> \
+                                              <h3 class="title"><%= graphs.karmaTitle %></h3> \
+                                              <div class="content"> \
+                                                    <p><%= graphs.karmaText %></p> \
+                                              </div> \
+                                        </div> \
+                                 </div> \
+                            </div> \
+                        </div> \
+                        <div class="box"> \
+                            <h3>Number of words added per day</h3> \
+                            <img src="http://chart.googleapis.com/chart?cht=bvg&chs=435x300&chd=t:<%= graphs.publishedWords() %>&chxt=x,y&chxr=1,0,<%= (graphs.publishedMaxOfWords() + 1) %>,5&chds=0,<%= (graphs.publishedMaxOfWords() + 1) %>&chxl=0:|<%= graphs.publishedDays() %>&chdl=<%= graphs.publishedDays() %>&chco=00FF00&chm=N,000000,0,-1,12&chf=bg,s,F5F5F5" alt="Number of words added per day" /> \
+                         </div>\
+                         <div class="box"> \
+                            <h3>Activities per day</h3> \
+                            <img src="http://chart.googleapis.com/chart?cht=bvo&chs=435x300&chd=t:<%= graphs.activitiesMistakes() %>|<%= graphs.activitiesWords() %>&chxt=x,y&chxr=1,0,<%= (graphs.activitiesMaxOfWords() + 5) %>,5&chds=0,<%= (graphs.activitiesMaxOfWords() + 1) %>&chxl=0:|<%= graphs.activitiesDays() %>&chdl=Mistakes|Words&chco=FF0000,00FF00&chm=N,000000,-1,,12|N,000000,0,,12&chf=bg,s,F5F5F5" alt="Activities per day" /> \
+                         </div>\
+                   </div> \
+                    <div class="span8" > \
+                        <div class="box"> \
+                            <h3>Today\'s success</h3> \
+                            <img src="http://chart.apis.google.com/chart?cht=gom&chs=435x230&chxt=x,y&chd=t:<%= graphs.success %>&chl=<%= graphs.success %>%&chco=FF0000,00FF00&chf=bg,s,F5F5F5" alt="success" width="435" height="230" /> \
                              <% if( !_.isEmpty( errors ) ){%> \
                                 <div class="box"> \
                                     <h3>Mistakes</h3> \
@@ -172,17 +257,6 @@ var CZ_KIBO_DRILUJEME2_TEMPLATES = {
                             <% } %> \
                         </div>\
                     </div> \
-                    \
-                   <div class="span8" > \
-                        <div class="box"> \
-                            <h3>Number of words added per day</h3> \
-                            <img src="http://chart.googleapis.com/chart?cht=bvg&chs=435x300&chd=t:<%= graphs.publishedValues() %>&chxt=x,y&chxr=1,0,<%= (graphs.publishedMaxValue() + 1) %>,5&chds=0,<%= (graphs.publishedMaxValue() + 1) %>&chxl=0:|<%= graphs.publishedKeys() %>&chdl=<%= graphs.publishedKeys() %>&chco=00FF00&chm=N,000000,0,-1,12&chf=bg,s,F5F5F5" alt="" /> \
-                         </div>\
-                         <div class="box"> \
-                            <h3>Number of mistakes per day</h3> \
-                            <img src="http://chart.googleapis.com/chart?cht=bvg&chs=435x300&chd=t:<%= graphs.mistakesValues() %>&chxt=x,y&chxr=1,0,<%= (graphs.mistakesMaxValue() + 1) %>,5&chds=0,<%= (graphs.mistakesMaxValue() + 1) %>&chxl=0:|<%= graphs.mistakesKeys() %>&chdl=<%= graphs.mistakesKeys() %>&chco=FF0000&chm=N,000000,0,-1,12&chf=bg,s,F5F5F5" alt="" /> \
-                         </div>\
-                   </div> \
                 </div> \
             '
 }
@@ -196,8 +270,7 @@ $(function(){
 		isTextTemplate: 1,
 		isNextWord: 0,
 		isFinish: 0,
-		errors: [],
-		success:0,               
+		errors: [],		              
 				
 		SWITCH_TEMPLATE_FOR: 7, //word
 		                               		
@@ -327,10 +400,12 @@ $(function(){
 			
 		finish:function(){	
 			this.isFinish = 1;	
-			this.success = Math.round( (this.words.length - this.errors.length) == 0 ? 0 : (this.words.length - this.errors.length) / ( this.words.length/ 100 ) );	
 			this.saveResult(); 
                         
-                        this.graphs = new Graph;                       
+                        this.graphs = new Graph({'words': this.words.length, 'mistakes': this.errors.length});
+                        this.graphs.savePracticeResult();
+                        this.graphs.computeSuccess();
+                        this.graphs.computeKarma();
 		},
 		
 		saveResult:function(){
@@ -347,8 +422,7 @@ $(function(){
 			_.each( _.difference(this.words.models, this.errors) , function(word, idx) {
 				var gravity = word.get('gravity');
 				word.set( {'gravity': gravity - 1} );
-				word.save();
-				
+				word.save();				
 			});			
 		},
                                		
@@ -378,7 +452,7 @@ $(function(){
 		render:function(){	
 			
 			if(this.isFinish ){
-				this.$("#practice-test-view").html( this.finishTemplate( {'errors': this.errors, 'success': this.success, 'graphs': this.graphs}) );
+				this.$("#practice-test-view").html( this.finishTemplate( {'errors': this.errors, 'graphs': this.graphs}) );                                
 			
 			}else if(this.words.length == 0){
 				this.$("#practice-test-view").html( this.isEmptyTemplate() );
