@@ -272,7 +272,7 @@ $(function(){
 		isFinish: 0,
 		errors: [],		              
 				
-		SWITCH_TEMPLATE_FOR: 7, //word
+		SWITCH_TEMPLATE_FOR: 5, //word
 		                               		
                 textTemplate: _.template( CZ_KIBO_DRILUJEME2_TEMPLATES.TEXT ),
 		radioTemplate: _.template( CZ_KIBO_DRILUJEME2_TEMPLATES.RADIO ),
@@ -455,10 +455,10 @@ $(function(){
 				this.$("#practice-test-view").html( this.finishTemplate( {'errors': this.errors, 'graphs': this.graphs}) );                                
 			
 			}else if(this.words.length == 0){
-				this.$("#practice-test-view").html( this.isEmptyTemplate() );
-			
+				this.$("#practice-test-view").hide().html( this.isEmptyTemplate() ).slideDown('slow');  
+                               			
 			}else if( this.isTextTemplate ){
-				this.$("#practice-test-view").html( this.textTemplate( {'word': this.words.at( this.index ).toJSON()}) );
+				this.$("#practice-test-view").html( this.textTemplate( {'word': this.words.at( this.index ).toJSON()}) );                              
 				
 			}else{
 				this.playSound();

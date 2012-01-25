@@ -15,7 +15,7 @@ table tr td{
                    
 /* COMMON */      
 .teacher{
-	background: #f5f5f5;
+	background: #f5f5f5;                       
 	padding:3em;
 	border-radius:5px;							
 }
@@ -61,6 +61,14 @@ table tr td{
         border-radius:5px;
         cursor:pointer;			
 }
+
+.tag:hover p, .tag.tagged p{
+  background: #333;
+  color:white;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
 		
 .tag p{
         padding:1em;

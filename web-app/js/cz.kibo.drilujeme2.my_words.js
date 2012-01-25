@@ -43,7 +43,7 @@ window.VocabularyView = Backbone.View.extend({
         	        	        	        	        	        	                	        	        			    	    		   
         	render:function(){             		
         		if( _.isEmpty( this.words ) ){
-        			this.$("#my_words-list-result").html( this.noResultFoundTemplate( ) );    						
+        			this.$("#my_words-list-result").hide().html( this.noResultFoundTemplate( ) ).slideDown('slow');    						
     			}else{
     				this.$("#my_words-list-result").html( this.vocabularyTemplate(  { words: this.words } ) );
     			}     				  				    		           		        		        		    			    			    				
