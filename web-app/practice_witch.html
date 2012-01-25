@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-language" content="en">
+    <title>Practise English with Witch</title>        
+    <meta name="description" content="Practicing English vocabulary. Study English with fun. English courses with the educational program is fun. Practice everyday." />
+    <meta name="keywords" content="English vocabulary,student of English,English, English language,practice English vocabulary,English studies,teaching English,educational program,education,studying languages" />
+    
+    <meta name="robots" content="noindex,nofollow">
+    
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  
+    <link rel="stylesheet" media="screen" href="css/application.css" />
+	
+    <script src="js/external/json2.js"></script>
+    <script src="js/external/jquery.js"></script>
+    <script src="js/external/underscore.js"></script>
+    <script src="js/external/backbone.js"></script>
+    <script src="js/external/backbone.localStorage.js"></script>
+    <script src="js/cz.kibo.drilujeme2.word.js"></script>       
+    <script src="js/cz.kibo.drilujeme2.preference.js"></script>
+    <script src="js/cz.kibo.drilujeme2.practice_words_witch.js"></script>
+    <script src="js/cz.kibo.drilujeme2.practice_test.js"></script>
+		
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />		
+</head>
+<body id="practice-test-page">
+
+    <header>	
+        <script>		
+                $('header').load('header.html');
+        </script>
+    </header>
+           
+    <div class="container">
+    	           	
+	    	<div class="teacher clearfix">
+	    		<img src="images/witch.png" class="creature"  />
+	    		<h1>Witch</h1>  
+
+                        <p>
+                        Witch practices your knowledge of <strong>the old vocabulary</strong>.
+                        </p>
+                        
+                        <p>
+                            Words that you once knew well, but <strong>after a long time you forget them</strong>. Witch pulls out this old forgotten words and reminds you those.                                                    
+                        </p>
+                       
+                        <p>
+                          A lot of joys in <strong>practicing your old vocabulary</strong>.
+                        </p>
+	       	</div>	
+	      				 	                           	       
+	  <div id="practice-test-view"></div>
+                	                        
+      <footer>	
+        <script>
+                $('footer').load('footer.html');
+        </script>
+      </footer>
+    	    	     	      		       	    	    	    	    	                                     	                 	   	              	          				   					   					         				      		   		      			      				      		     
+    </div> <!-- /container --> 
+	
+    <script id="practice-isEmpty-template" type="text/template" >
+        <div class="box" align="center">		
+            <h3>No words in your vocabulary.</h3>
+        </div>     
+    </script>
+		  	
+</body>
+</html>
